@@ -1,1 +1,1 @@
-Admin dashboard
+@extends('layouts.admin')
