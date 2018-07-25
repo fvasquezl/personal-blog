@@ -1,6 +1,5 @@
 @extends('layouts.admin')
-
-@section('title') New Post @endsection
+@section('title') Editing {{$post->title}} @endsection
 
 @section('content')
     <div class="content">
@@ -9,7 +8,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header bg-light">
-                            New Post
+                            Editing {{$post->title}}
                         </div>
 
                         @if(Session::has('success'))
@@ -27,14 +26,17 @@
                             </div>
                         @endif
 
-                        <form action="{{route('createPost')}}" method="POST">
+                        <form action="{{route('adminPostEditPost', $post->id)}}" method="POST">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="normal-input" class="form-control-label">Title</label>
-                                            <input name="title" id="normal-input" class="form-control"
+                                            <input name="title"
+                                                   id="normal-input"
+                                                   class="form-control"
+                                                   value="{{$post->title}}"
                                                    placeholder="Post Title">
                                         </div>
                                     </div>
@@ -48,11 +50,11 @@
                                                       name="content"
                                                       cols="30"
                                                       rows="10"
-                                                      class="form-control"></textarea>
+                                                      class="form-control">{{$post->content}}</textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-success" type="submit">Create Post</button>
+                                <button class="btn btn-success" type="submit">Update Post</button>
                             </div>
                         </form>
                     </div>
@@ -60,4 +62,5 @@
             </div>
         </div>
     </div>
+
 @endsection

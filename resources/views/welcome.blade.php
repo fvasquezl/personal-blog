@@ -34,14 +34,14 @@
                         |
                         <i class="fa fa-comment"></i> {{$post->comments->count()}}
                     </p>
-
                 </div>
                 <hr>
                 @endforeach
                 <!-- Pager -->
-                <div class="clearfix">
-                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-                </div>
+                    {{$posts->links()}}
+                {{--<div class="clearfix">--}}
+                    {{--<a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>--}}
+                {{--</div>--}}
             </div>
         </div>
     </div>
