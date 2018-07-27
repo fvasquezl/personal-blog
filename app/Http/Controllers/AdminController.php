@@ -7,6 +7,7 @@ use App\Comment;
 use App\Http\Requests\CreatePost;
 use App\Http\Requests\UserUpdate;
 use App\Post;
+use App\Product;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -121,5 +122,51 @@ class AdminController extends Controller
         $user = User::where('id', $id)->first();
         $user->delete();
         return back()->with('success', 'User delete successfully');
+    }
+
+
+    public function products()
+    {
+        $products = Product::all();
+        return view('admin.products', compact('products'));
+    }
+
+    public function newProduct()
+    {
+        return view('admin.newProduct');
+    }
+    public function newProductPost(Request $request)
+    {
+        $this->validate($request,[
+            'title' => 'required|string',
+            'thumbnail' => 'required|file',
+            'description' => 'required',
+            'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/'
+        ]);
+        $product = new Product;
+        $product->title = $request['title'];
+        $product->description = $request['description'];
+        $product->price = $request['price'];
+
+        $thumbnail =  $request->file('thumbnail');
+
+        $fileName = $thumbnail->getClientOriginalName();
+        $fileExtension = $thumbnail->getClientOriginalExtension();
+        $thumbnail->move('product-images',$fileName);
+        $product->thumbnail = 'product-images/'. $fileName;
+        $product->save();
+
+        return back();
+
+    }
+
+    public function editProduct()
+    {
+
+    }
+
+   public function editProductPost(Request $request)
+    {
+
     }
 }

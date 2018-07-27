@@ -1,11 +1,13 @@
 @extends('layouts.admin')
-@section('title') Admin Posts @endsection
+
+@section('title') Admin Products @endsection
 
 @section('content')
     <div class="content">
         <div class="card">
             <div class="card-header bg-light">
-                Admin Posts
+                Admin Products
+                <a href="{{route('adminNewProduct')}}" class="btn btn-primary">New Product</a>
             </div>
 
             <div class="card-body">
@@ -14,28 +16,28 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Thumbnail</th>
                             <th>Title</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                            <th>Comments</th>
+                            <th>Description</th>
+                            <th>Price</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($posts as $post)
+                        @foreach($products as $product)
                             <tr>
-                                <td>{{$post->id}}</td>
+                                <td>{{$product->id}}</td>
+                                <td><img src="{{asset($product->thumbnail)}}" width="100"></td>
                                 <td class="text-nowrap">
-                                    <a href="{{route('singlePost',$post->id)}}">{{$post->title}}</a>
+                                    <a href="{{route('adminEditProduct',$product->id)}}">{{$product->title}}</a>
                                 </td>
-                                <td>{{\Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</td>
-                                <td>{{\Carbon\Carbon::parse($post->updated_at)->diffForHumans()}}</td>
-                                <td>{{$post->comments->count()}}</td>
+                                <td>{{$product->description}}</td>
+                                <td>{{$product->price}} USD</td>
                                 <td>
-                                    <a href="{{route('adminPostEdit',$post->id)}}" class="btn btn-warning"><i class="icon icon-pencil"></i></a>
-                                    <button type="post"
+                                    <a href="{{route('adminEditProductPost',$product->id)}}" class="btn btn-warning"><i class="icon icon-pencil"></i></a>
+                                    <button type="product"
                                             data-toggle="modal"
-                                            data-target="#deletePostModal-{{$post->id}}"
+                                            data-target="#deletePostModal-{{$product->id}}"
                                             class="btn btn-danger"><i class="icon icon-trash"></i></button>
                                 </td>
                             </tr>
@@ -47,14 +49,14 @@
         </div>
     </div>
 
-    @foreach($posts as $post)
+    @foreach($products as $product)
         <!-- Modal -->
-        <div class="modal fade" id="deletePostModal-{{$post->id}}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="deletePostModal-{{$product->id}}" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">You are about to delete {{$post->title}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">You are about to delete {{$product->title}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -65,8 +67,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No, keep it</button>
                         <form method="POST"
-                              id="deletePost-{{$post->id}}"
-                              action="{{route('adminDeletePost',$post->id)}}">
+                              id="deletePost-{{$product->id}}"
+                              action="{{route('adminDeletePost',$product->id)}}">
                             @csrf
                             <button type="submit" class="btn btn-primary">Yes, delete it</button>
                         </form>
